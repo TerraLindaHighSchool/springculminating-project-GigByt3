@@ -19,12 +19,22 @@ public class Letter_TP : MonoBehaviour
     {
         Debug.Log("Letter_TP Fired " + level);
         System.Random randy = new System.Random();
-        password = new string[level + 3];
+        password = new string[level];
         for(int i = 0; i < password.Length; i++)
         {
             password[i] = alphabet[randy.Next(alphabet.Length - 1)];
             Debug.Log(password[i]);
         }
+    }
+
+    public int getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel(int l)
+    {
+        level = l;
     }
 
     // Update is called once per frame
@@ -33,7 +43,6 @@ public class Letter_TP : MonoBehaviour
         if(playerIn)
         {
             tick++;
-            Debug.Log("tickCount: " + tick);
         } else {
             tick = 0;
         }
@@ -44,15 +53,14 @@ public class Letter_TP : MonoBehaviour
             tick = 0;
         }
 
-        Debug.Log(playerProgress + "/" + password.Length);
-
         if(Input.GetKeyDown(password[playerProgress]))
         {
             Clue.text = ""; 
             playerProgress++;
             if(playerProgress >= password.Length)
             {
-                this.gameObject.GetComponent<Load_Level>().Load(level++);
+                level++;
+                this.gameObject.GetComponent<Load_Level>().Load(level);
             }
         }
     }

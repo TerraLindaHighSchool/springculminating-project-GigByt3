@@ -6,40 +6,42 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject powerupPrefab;
-    private float range = 9;
+    public float range = 2;
     public int enemyCount;
-    private int waveNumber = 1;
+    public int spawnRate;
+
     // Start is called before the first frame update
     void Start()
     {
-        SpawnEnemyWave(waveNumber);
-        Instantiate(powerupPrefab, generateSpawnPosition(), enemyPrefab.transform.rotation);
+        //Debug.Log(GameObject.Find("Sphere").GetComponents(typeof(Letter_TP))[1].getLevel());
+        SpawnEnemyWave(1);
     }
 
-    private Vector3 generateSpawnPosition()
+    private Vector3 generateSpawnPosition(int height)
     {
         float spawnPosX = Random.Range(-range, range);
         float spawnPosZ = Random.Range(-range, range);
-        return new Vector3(spawnPosX, 0, spawnPosZ);
+        return new Vector3(spawnPosX, height, spawnPosZ);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameObject.Find("Player") == null) { Destroy(this); }
+        System.Random randy = new System.Random();
         enemyCount = FindObjectsOfType<Enemy>().Length;
-        if (enemyCount == 0) {
-            waveNumber++;
-            SpawnEnemyWave(waveNumber);
-            Instantiate(powerupPrefab, generateSpawnPosition(), enemyPrefab.transform.rotation);
+        if (0 == randy.Next(enemyCount*1000/spawnRate) && enemyCount < 6) {
+            SpawnEnemyWave(randy.Next(4));
+            if (0 == randy.Next(5)) { Instantiate(powerupPrefab, generateSpawnPosition(0), enemyPrefab.transform.rotation); }
         }
-
     }
 
     void SpawnEnemyWave(int enemiesToSpawn)
     {
         for(int i = 0; i < enemiesToSpawn; i++)
         {
-            Instantiate(enemyPrefab, generateSpawnPosition(), enemyPrefab.transform.rotation);
+            Instantiate(enemyPrefab, generateSpawnPosition(10), enemyPrefab.transform.rotation);
         }
     }
+
 }

@@ -8,6 +8,7 @@ public class PlayerControler : MonoBehaviour
     private GameObject focalPoint;
     private float speed;
     public bool hasPowerup;
+    public GameObject explosion;
     public GameObject powerupIndicator;
     private float powerupStrength = 15.0f;
     // Start is called before the first frame update
@@ -24,6 +25,7 @@ public class PlayerControler : MonoBehaviour
         float forwardInput = Input.GetAxis("Vertical");
         playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput);
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.5f, 0);
+        if (transform.position.y < -2) { Blow(); }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,6 +44,26 @@ public class PlayerControler : MonoBehaviour
             enemyRigidbody.AddForce(awayFromPlayer * powerupStrength, ForceMode.Impulse);
 
         }
+    }
+
+    public void Blow()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(this.gameObject.transform.position, 2);
+        //this.gameObject.SetActive(false);
+        explosion.GetComponent<ParticleSystem>().Play();
+        this.gameObject.tag = "gone";
+        foreach (Collider hit in hitColliders)
+        {
+            if (hit.gameObject.tag == "Enemy")
+            {
+                hit.GetComponent<Enemy>().Blow();
+            }
+            else if (hit.gameObject.tag == "Player")
+            {
+                hit.GetComponent<PlayerControler>().Blow();
+            }
+        }
+        Destroy(this.gameObject.GetComponent<MeshFilter>());
     }
 
     IEnumerator PowerupCountdownRoutine()
