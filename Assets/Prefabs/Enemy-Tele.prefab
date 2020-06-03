@@ -121,12 +121,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3904120139132059894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79fd401f4a7df401f990a88f5ed3648e, type: 3}
+  m_Script: {fileID: 11500000, guid: d3f425ee1e2334ba0aeadd4866e494ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 1
   speed: 4
-  explosion: {fileID: 4318262929304208240}
+  explosion: {fileID: 4318262929285110690}
 --- !u!1001 &4318262929284936048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -192,15 +192,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 079954accd64b32419ec069129c81273, type: 3}
---- !u!4 &4318262929284796940 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 402300, guid: 079954accd64b32419ec069129c81273,
+--- !u!1 &4318262929285110690 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 191186, guid: 079954accd64b32419ec069129c81273,
     type: 3}
   m_PrefabInstance: {fileID: 4318262929284936048}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &4318262929304208240 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19821056, guid: 079954accd64b32419ec069129c81273,
+--- !u!4 &4318262929284796940 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 402300, guid: 079954accd64b32419ec069129c81273,
     type: 3}
   m_PrefabInstance: {fileID: 4318262929284936048}
   m_PrefabAsset: {fileID: 0}

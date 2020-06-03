@@ -230,11 +230,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 150010508}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c90adc08f508448689a6a3057349d547, type: 3}
+  m_Script: {fileID: 11500000, guid: 11bbe88eab1164e1789a0431dd8f5ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hasPowerup: 0
-  explosion: {fileID: 1578673385}
+  explosion: {fileID: 623070724}
   powerupIndicator: {fileID: 105684611}
 --- !u!54 &150010510
 Rigidbody:
@@ -372,6 +372,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &623070724 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 191186, guid: 079954accd64b32419ec069129c81273,
+    type: 3}
+  m_PrefabInstance: {fileID: 1569494292}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &821768500
 GameObject:
   m_ObjectHideFlags: 0
@@ -5233,6 +5239,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3712298786234418515, guid: 3fd5555088952419ebf0eb82e9096fa5,
+        type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7382815964509602841, guid: 3fd5555088952419ebf0eb82e9096fa5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5680,12 +5691,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 079954accd64b32419ec069129c81273, type: 3}
---- !u!1 &1578673385 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 191186, guid: 079954accd64b32419ec069129c81273,
-    type: 3}
-  m_PrefabInstance: {fileID: 1569494292}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1584018212
 GameObject:
   m_ObjectHideFlags: 0

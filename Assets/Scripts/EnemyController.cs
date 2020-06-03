@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     public enum EnmType
     {
@@ -43,10 +43,10 @@ public class Enemy : MonoBehaviour
                 enemyRb.AddForce(lookDirection * speed);
             }
             if (armed) { tick++; }
-            if (transform.position.y < -2) { Blow(); }
-            if (tick > 10 && Type == EnmType.Bomb)
+            if (transform.position.y < -10) { Explode(); }
+            if (tick > 50 && Type == EnmType.Bomb)
             {
-                Blow();
+                Explode();
             }
         }
     }
@@ -61,22 +61,31 @@ public class Enemy : MonoBehaviour
         go = true;
     }
 
-    public void Blow()
+    public void Explode()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(this.gameObject.transform.position, 4);
-        explosion.GetComponent<ParticleSystem>().Play();
+        Destroy(this.gameObject.GetComponent<MeshRenderer>());
         this.gameObject.tag = "gone";
+        Collider[] hitColliders = Physics.OverlapSphere(this.gameObject.transform.position, 2);
+        explosion.GetComponent<ParticleSystem>().Play();
         foreach (Collider hit in hitColliders)
         {
             if(hit.gameObject.tag == "Enemy")
             {
-                hit.GetComponent<Enemy>().Blow();
+                hit.GetComponent<EnemyController>().Explode();
             } else if(hit.gameObject.tag == "Player")
             {
-                hit.GetComponent<PlayerControler>().Blow();
+                hit.GetComponent<PlayerController>().Explode();
             }
         }
-        Destroy(this.gameObject.GetComponent<MeshFilter>());
+        StartCoroutine(die());
+    }
+
+    IEnumerator die()
+    {
+        Debug.Log("Wait and!");
+        yield return new WaitForSeconds(2);
+        Debug.Log("Destroy!");
+        Destroy(this.gameObject);
     }
 
     private void OnCollisionExit(Collision collision)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControler : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
     private GameObject focalPoint;
@@ -23,9 +23,9 @@ public class PlayerControler : MonoBehaviour
     void Update()
     {
         float forwardInput = Input.GetAxis("Vertical");
-        playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput);
+        if (transform.position.y < 20) { playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput); }
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.5f, 0);
-        if (transform.position.y < -2) { Blow(); }
+        if (transform.position.y < -10) { Explode(); }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,24 +46,33 @@ public class PlayerControler : MonoBehaviour
         }
     }
 
-    public void Blow()
+    public void Explode()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(this.gameObject.transform.position, 2);
-        //this.gameObject.SetActive(false);
-        explosion.GetComponent<ParticleSystem>().Play();
+        Destroy(this.gameObject.GetComponent<MeshRenderer>());
         this.gameObject.tag = "gone";
+        Collider[] hitColliders = Physics.OverlapSphere(this.gameObject.transform.position, 2);
+        explosion.GetComponent<ParticleSystem>().Play();
         foreach (Collider hit in hitColliders)
         {
             if (hit.gameObject.tag == "Enemy")
             {
-                hit.GetComponent<Enemy>().Blow();
+                hit.GetComponent<EnemyController>().Explode();
             }
             else if (hit.gameObject.tag == "Player")
             {
-                hit.GetComponent<PlayerControler>().Blow();
+                hit.GetComponent<PlayerController>().Explode();
             }
         }
-        Destroy(this.gameObject.GetComponent<MeshFilter>());
+
+        StartCoroutine(die());
+    }
+
+    IEnumerator die()
+    {
+        Debug.Log("Wait and!");
+        yield return new WaitForSeconds(2);
+        Debug.Log("Destroy!");
+        Destroy(this.gameObject);
     }
 
     IEnumerator PowerupCountdownRoutine()

@@ -29,7 +29,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (GameObject.Find("Player") == null) { Destroy(this); }
         System.Random randy = new System.Random();
-        enemyCount = FindObjectsOfType<Enemy>().Length;
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
         if (0 == randy.Next(enemyCount*1000/spawnRate) && enemyCount < 6) {
             SpawnEnemyWave(randy.Next(4));
             if (0 == randy.Next(5)) { Instantiate(powerupPrefab, generateSpawnPosition(0), enemyPrefab.transform.rotation); }
