@@ -6,8 +6,11 @@ TagManager:
   tags:
   - Focal point
   - Enemy
-  - Powerup
   - gone
+  - Powerup1
+  - Powerup2
+  - Powerup3
+  - Powerup
   layers:
   - Default
   - TransparentFX

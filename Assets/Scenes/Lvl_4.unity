@@ -5833,7 +5833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bbe88eab1164e1789a0431dd8f5ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasPowerup: 0
+  hasPowerup: 
   explosion: {fileID: 1321650260}
   powerupIndicator: {fileID: 1274055654}
 --- !u!54 &1705317900
@@ -6058,8 +6058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3904120139132059894, guid: f53fb876242d44a1ca222fe8a869c8e4,
     type: 3}
-  powerupPrefab: {fileID: 2590191021487616849, guid: a21ec79e44dbb4222adfd323ff082c2d,
-    type: 3}
+  powerupPrefab: {fileID: 132260, guid: 510349479745aac4b9209e9326e42601, type: 3}
   range: 7
   enemyCount: 0
   spawnRate: 7

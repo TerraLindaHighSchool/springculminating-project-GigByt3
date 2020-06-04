@@ -7,13 +7,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;
     private GameObject focalPoint;
     private float speed;
-    public bool hasPowerup;
+    public bool[] hasPowerup; //[Invulnerable, Stop, Anhilate]
     public GameObject explosion;
     public GameObject powerupIndicator;
-    private float powerupStrength = 15.0f;
+    private float powerupStrength = 800.0f;
     // Start is called before the first frame update
     void Start()
     {
+        hasPowerup = new bool[3];
         speed = 15;
         playerRb = GetComponent<Rigidbody>();
         focalPoint = GameObject.Find("Focal Point");
@@ -26,22 +27,42 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y < 20) { playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput); }
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.5f, 0);
         if (transform.position.y < -10) { Explode(); }
+        if (Input.GetKeyDown("2") && hasPowerup[1]) { Powerup2Fire(); hasPowerup[1] = false; }
+        if (Input.GetKeyDown("3") && hasPowerup[2]) { Powerup3Fire(); hasPowerup[2] = false; }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Powerup"))
+        Debug.Log("Collided!" + other.CompareTag("Powerup1") + other.CompareTag("Powerup2") + other.CompareTag("Powerup3"));
+        if(other.CompareTag("Powerup1"))
         {
-            hasPowerup = true;
+            hasPowerup[0] = true;
             Destroy(other.gameObject);
-            StartCoroutine(PowerupCountdownRoutine());
+
+            StartCoroutine(Powerup1CountdownRoutine());
             powerupIndicator.gameObject.SetActive(true);
-        } else
-            if(other.CompareTag("Enemy") && hasPowerup)
+
+        } else if (other.CompareTag("Powerup2"))
+        {
+            hasPowerup[1] = true;
+            Destroy(other.gameObject);
+            powerupIndicator.gameObject.SetActive(true);
+        }
+        else if (other.CompareTag("Powerup3"))
+        {
+            hasPowerup[2] = true;
+            Destroy(other.gameObject);
+            powerupIndicator.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy") /*&& hasPowerup[0]*/)
         {
             Rigidbody enemyRigidbody = other.gameObject.GetComponent<Rigidbody>();
             Vector3 awayFromPlayer = (transform.position - other.gameObject.transform.position);
-            enemyRigidbody.AddForce(awayFromPlayer * powerupStrength, ForceMode.Impulse);
+            enemyRigidbody.AddForce(-awayFromPlayer * powerupStrength, ForceMode.Impulse);
 
         }
     }
@@ -75,11 +96,38 @@ public class PlayerController : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    IEnumerator PowerupCountdownRoutine()
+
+    IEnumerator Powerup1CountdownRoutine()
     {
         yield return new WaitForSeconds(7);
-        hasPowerup = false;
+        hasPowerup[0] = false;
         powerupIndicator.gameObject.SetActive(false);
     }
 
+    private void Powerup2Fire()
+    {
+        this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        this.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        powerupIndicator.gameObject.SetActive(false);
+    }
+
+    private void Powerup3Fire()
+    {
+        this.gameObject.tag = "gone";
+        Collider[] hitColliders = Physics.OverlapSphere(this.gameObject.transform.position, 2);
+        explosion.GetComponent<ParticleSystem>().Play();
+        foreach (Collider hit in hitColliders)
+        {
+            if (hit.gameObject.tag == "Enemy")
+            {
+                hit.GetComponent<EnemyController>().Explode();
+            }
+            else if (hit.gameObject.tag == "Player")
+            {
+                hit.GetComponent<PlayerController>().Explode();
+            }
+        }
+        this.gameObject.tag = "gone";
+        powerupIndicator.gameObject.SetActive(false);
+    }
 }

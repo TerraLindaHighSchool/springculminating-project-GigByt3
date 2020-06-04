@@ -32,10 +32,10 @@ public class SpawnManager : MonoBehaviour
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
         if (0 == randy.Next(enemyCount*1000/spawnRate) && enemyCount < 6) {
             SpawnEnemyWave(randy.Next(4));
-            if (0 == randy.Next(5)) { Instantiate(powerupPrefab, generateSpawnPosition(0), enemyPrefab.transform.rotation); }
+            if (0 == randy.Next(3)) { Instantiate(powerupPrefab, generateSpawnPosition(0), enemyPrefab.transform.rotation); }
         }
     }
-
+        
     void SpawnEnemyWave(int enemiesToSpawn)
     {
         for(int i = 0; i < enemiesToSpawn; i++)
